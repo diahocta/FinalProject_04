@@ -1,0 +1,16 @@
+.hijau {
+    color: rgb(16, 169, 16);
+}
+
+.btn-submit {
+    border: none;
+    padding: 10px 20px;
+    background-color: rgb(16, 169, 16);
+    color: white;
+}
+
+input {
+    border: none;
+    border-bottom: 2px solid rgb(16, 169, 16);
+    ;
+}

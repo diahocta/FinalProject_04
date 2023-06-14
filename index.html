@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous"
+        >
+        <link rel="stylesheet" href="style.css">
+        <title>Weather</title>
+    </head>
+    <body>
+        <div class="container p-5">
+            <div class="row p-5" style="box-shadow: 3px 3px 3px 3px gray">
+                <div class="col-lg-5 text-center bg-dark">
+                    <h1 class="text-light pt-4">Ramalan Cuaca</h1>
+                </div>
+                <div class="col-lg-7 text-center">
+                    <form id="weatherForm">
+                        <div class="d-flex justify-content-center mb-5">
+                            <input type="text" id="cityInput">
+                            <button type="submit" class="btn-submit">Submit</button>
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-center mb-2">
+                        <h3 class="hijau">City :</h3>
+                        <h3 class="hijau" id="city"></h3>
+                    </div>
+                    <div class="d-flex justify-content-center mb-2">
+                        <h3 class="hijau">Conditions :</h3>
+                        <h3 class="hijau" id="conditions"></h3>
+                    </div>
+                    <div class="d-flex justify-content-center mb-2">
+                        <h3 class="hijau">Temperature :</h3>
+                        <h3 class="hijau" id="temperature"></h3>
+                    </div>
+                    <div class="d-flex justify-content-center mb-2">
+                        <h3 class="hijau">Wind Speed :</h3>
+                        <h3 class="hijau" id="wind_speed"></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script>
+        // Membuat variabel untuk menyimpan elemen HTML
+        const cityElement = document.getElementById('city');
+        const conditionsElement = document.getElementById('conditions');
+        const temperatureElement = document.getElementById('temperature');
+        const windSpeedElement = document.getElementById('wind_speed');
+
+        function getWeatherData(city) {
+            const apiKey = '59e6682c2cbfeaf1373b9c30877e950a';
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (response.status !== 200) {
+                        throw new Error(response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Memperbarui elemen HTML dengan data cuaca
+                    cityElement.textContent = data.name;
+                    conditionsElement.textContent = data.weather[0].description;
+                    temperatureElement.textContent = data.main.temp + '°C';
+                    windSpeedElement.textContent = data.wind.speed + ' m/s';
+                })
+                .catch(error => {
+                    console.log('Terjadi kesalahan:', error);
+                });
+        }
+
+        const weatherForm = document.getElementById('weatherForm');
+        const cityInput = document.getElementById('cityInput');
+
+        weatherForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const city = cityInput.value;
+            getWeatherData(city);
+        });
+        </script>
+    </body>
+</html>
